@@ -1,0 +1,33 @@
+{
+  "name": "grpc-vs-rest-autocomplete",
+  "version": "1.0.0",
+  "description": "Auto-complete search comparison between gRPC and REST with performance metrics",
+  "main": "server/index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev:grpc": "concurrently \"npm run server\" \"npm run client\" \"npm run envoy\"",
+    "server": "nodemon server/index.js",
+    "client": "cd client && npm start",
+    "build": "cd client && npm run build",
+    "proto": "grpc_tools_node_protoc --js_out=import_style=commonjs,binary:./server/proto --grpc_out=grpc_js:./server/proto --plugin=protoc-gen-grpc=./node_modules/.bin/grpc_tools_node_protoc_plugin ./proto/search.proto",
+    "proto:web": "protoc -I=proto proto/search.proto --js_out=import_style=commonjs:client/src/generated --grpc-web_out=import_style=commonjs,mode=grpcwebtext:client/src/generated",
+    "setup:grpc": "./setup-grpc.sh",
+    "envoy:start": "docker-compose up -d",
+    "envoy:stop": "docker-compose down",
+    "envoy:logs": "docker-compose logs -f envoy"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.9.14",
+    "@grpc/proto-loader": "^0.7.10",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "grpc-tools": "^1.12.4"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.0.2"
+  },
+  "keywords": ["grpc", "rest", "performance", "autocomplete", "comparison"],
+  "author": "Your Name",
+  "license": "MIT"
+}
